@@ -1,0 +1,264 @@
+/* =================================================================
+   1. ЦВЕТОВЫЕ ПЕРЕМЕННЫЕ И ТЕМЫ
+================================================================= */
+:root {
+    /* Светлая тема (по умолчанию) */
+    --body-bg: #f8f9fa;
+    --text-color: #212529;
+    --card-bg: #ffffff;
+    --card-border-color: #dee2e6;
+    --card-shadow: rgba(0, 0, 0, 0.08);
+    --card-hover-shadow: rgba(0, 0, 0, 0.15);
+    --table-header-bg: #e9ecef;
+    --table-border-color: #adb5bd;
+    --table-row-hover-bg: rgba(0, 0, 0, 0.05);
+    --input-bg: #fff;
+    --input-border-color: #ced4da;
+    --modal-header-border: #dee2e6;
+    --primary-color: #0d6efd;
+    --bs-body-color: var(--text-color); /* Bootstrap интеграция */
+    --bs-body-bg: var(--body-bg); /* Bootstrap интеграция */
+}
+
+body.dark-mode {
+    /* Тёмная тема */
+    --body-bg: #1c1c1e;
+    --text-color: #e2e2e2;
+    --card-bg: #2c2c2e;
+    --card-border-color: #4a4a4c;
+    --card-shadow: rgba(0, 0, 0, 0.2);
+    --card-hover-shadow: rgba(0, 0, 0, 0.4);
+    --table-header-bg: #3a3a3c;
+    --table-border-color: #545456;
+    --table-row-hover-bg: rgba(255, 255, 255, 0.08);
+    --input-bg: #3a3a3c;
+    --input-border-color: #545456;
+    --modal-header-border: #4a4a4c;
+    --primary-color: #0d6efd; /* Оставляем тот же для акцента */
+}
+
+/* =================================================================
+   2. БАЗОВЫЕ СТИЛИ
+================================================================= */
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: var(--body-bg);
+    color: var(--text-color);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease, overflow 0.3s ease;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+/* =================================================================
+   3. КОМПОНЕНТЫ (Карточки, Навбар, Таблицы)
+================================================================= */
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border-color);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px var(--card-shadow);
+    transition: box-shadow 0.25s ease-in-out, background-color 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 10px 24px var(--card-hover-shadow);
+}
+
+.navbar {
+    box-shadow: 0 4px 6px -1px var(--card-shadow);
+}
+
+.table {
+    --bs-table-color: var(--text-color);
+    --bs-table-bg: var(--card-bg);
+    --bs-table-border-color: var(--card-border-color);
+    --bs-table-striped-color: var(--text-color);
+    --bs-table-hover-color: var(--text-color);
+    --bs-table-hover-bg: var(--table-row-hover-bg);
+}
+
+.table thead th {
+    background-color: var(--table-header-bg);
+    border-bottom: 2px solid var(--table-border-color);
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
+.sortable { cursor: pointer; }
+.sortable span { float: right; font-size: 0.8em; }
+
+/* =================================================================
+   4. ФОРМЫ
+================================================================= */
+.form-control, .form-select {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border-color);
+    color: var(--text-color);
+}
+.form-control:focus, .form-select:focus {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+.form-control::placeholder {
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
+/* =================================================================
+   5. ПАНЕЛЬ УПРАВЛЕНИЯ И ПУЛЬСАЦИЯ
+================================================================= */
+.control-panel-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+.btn-control {
+    background-color: #495057;
+    border-color: #495057;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.btn-control:hover {
+    background-color: #343a40;
+    border-color: #343a40;
+    color: #fff;
+}
+.btn-control.btn-admin {
+    background-color: #a42121;
+    border-color: #a42121;
+}
+.btn-control.btn-admin:hover {
+    background-color: #831a1a;
+    border-color: #831a1a;
+}
+#requests-widget { cursor: pointer; }
+.pulse-animation { animation: pulse 1.5s infinite; }
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,193,7,0.6); }
+    70% { box-shadow: 0 0 0 14px rgba(255,193,7,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,193,7,0); }
+}
+
+/* =================================================================
+   6. КАСТОМНЫЕ МОДАЛЬНЫЕ ОКНА
+================================================================= */
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1050;
+}
+.custom-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+.custom-modal {
+    background: var(--card-bg);
+    border-radius: 0.75rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    transform: scale(0.95);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.custom-modal-overlay.active .custom-modal {
+    transform: scale(1);
+}
+.custom-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--modal-header-border);
+}
+.custom-modal-header h5 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+.custom-modal-close {
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    font-weight: 300;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0 0.5rem;
+    opacity: 0.7;
+}
+.custom-modal-close:hover {
+    opacity: 1;
+}
+.custom-modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+/* =================================================================
+   7. АДАПТИВНОСТЬ
+================================================================= */
+@media (max-width: 768px) {
+    .custom-modal {
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        transform: translateY(100%);
+    }
+    .custom-modal-overlay.active .custom-modal {
+        transform: translateY(0);
+    }
+    .custom-modal-body {
+        height: calc(100vh - 65px); 
+    }
+    .container > .mb-3 {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .container > .mb-3 .btn {
+        width: 100%;
+    }
+    #filters-form > .col-md-3 {
+        width: 50%;
+    }
+}
+@media (max-width: 576px) {
+    #filters-form > .col-md-3 {
+        width: 100%;
+    }
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+
+
+

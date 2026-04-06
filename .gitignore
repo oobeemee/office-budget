@@ -1,0 +1,20 @@
+# Docker
+db_data/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env files (ВАЖНО! Не загружайте .env с паролями)
+.env
+.env.local
+.env.*.local
+
+# PHP
+vendor/
+composer.lock

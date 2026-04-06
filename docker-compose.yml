@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html
+    # ВАЖНО: Передаем PHP те же переменные, но под старыми именами,
+    # чтобы твой database.php продолжал работать без изменений.
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      # Передаем настройки админа для скриптов, если понадобятся
+      admin: ${admin}
+      admin_password: ${admin_password}
+    depends_on:
+      - db
+    command: >
+      sh -c "php init_admin.php && apache2-foreground"
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    # Вот этот блок, который просил препод:
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+      # Переменные для нашего скрипта создания админа:
+      admin: ${admin}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./create_admin.sh:/docker-entrypoint-initdb.d/z_create_admin.sh
+
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      PMA_ARBITRARY: 1
+      # PhpMyAdmin тоже нужно знать, куда подключаться
+      PMA_HOST: db
+
+volumes:
+  db_data:
